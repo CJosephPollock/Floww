@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+tools:context="com.example.iguest.flowww.DetailsView">
+
+<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/map"
+    android:name="com.google.android.gms.maps.SupportMapFragment"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    tools:context="com.example.iguest.flowww.DetailsView" />
+
+<ScrollView
+    android:id="@+id/viewScrollDetailsInformation"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="16dp">
+
+        <LinearLayout
+            android:id="@+id/viewDetailsSourceTitleInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="40dp"
+                android:layout_marginRight="7dp"
+                android:src="@android:drawable/ic_delete"/>
+
+            <TextView
+                android:id="@+id/txtDetailsSourceName"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                android:text="Source Name"/>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnAddReview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Add Review"/>
+
+        <TextView
+            android:id="@+id/txtDetailsLocationTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:paddingTop="16dp"
+            android:text="Location Description:"/>
+
+        <TextView
+            android:id="@+id/txtDetailsSourceLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="source location"/>
+
+        <RatingBar
+            android:id="@+id/rtgDetailsSourceStars"
+            android:layout_width="wrap_content"
+            android:layout_height="65dp"
+            android:isIndicator="true"
+            android:rating="4.6"
+            android:layout_gravity="center"
+            android:paddingTop="16dp"/>
+        <!--android:scaleX=".4"-->
+        <!--android:scaleY=".4"-->
+        <!--android:transformPivotX="0dp"-->
+        <!--android:transformPivotY="0dp" -->
+
+        <TextView
+            android:id="@+id/txtDetailsRatingCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="number of ratings"/>
+
+        <TextView
+            android:id="@+id/txtDetailsReviewsTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:paddingTop="16dp"
+            android:text="Recommended Reviews"/>
+
+        <TextView
+            android:id="@+id/listDetailsSourceReviews"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="source reviews"/>
+
+        <TextView
+            android:id="@+id/listDetailsSourceReviews2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="30dp"
+            android:text="source reviews"/>
+
+        <TextView
+            android:id="@+id/listDetailsSourceReviews3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="30dp"
+
+            android:text="source reviews"/>
+
+    </LinearLayout>
+</ScrollView>
+
+</LinearLayout>
