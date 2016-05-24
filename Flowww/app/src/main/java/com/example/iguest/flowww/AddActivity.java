@@ -3,6 +3,7 @@ package com.example.iguest.flowww;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.telecom.Call;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -37,9 +38,9 @@ public class AddActivity extends AppCompatActivity {
         bundle.putBoolean("status", status);
         bundle.putString("review", review);
 
-//        Intent intent = new Intent(AddActivity.this, DetailActivity.class);
-//        intent.putExtra("EXTRA_TEXT", bundle); // not sure what string to use here...
-//        startActivity(intent);
+        Intent intent = new Intent(AddActivity.this, DetailsView.class);
+        //intent.putExtra("EXTRA_TEXT", bundle); // not sure what string to use here...
+        startActivity(intent);
 
         // how to add that data to the firebase?
         // and how do we want to add the location of the fountain? by current location

@@ -190,10 +190,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             case R.id.add_btn:
                 Intent intent = new Intent(MapActivity.this, AddActivity.class);
                 startActivity(intent);
-
-//                getSupportFragmentManager().beginTransaction()
-//                        .addToBackStack(null).commit();
-
                 return true; //I got this
 
             default:
