@@ -1,9 +1,12 @@
 package com.example.iguest.flowww;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
+import android.location.LocationManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -16,6 +19,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -27,9 +34,13 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.HashMap;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener, GoogleMap.OnMarkerClickListener {
@@ -38,6 +49,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private GoogleMap map;
     private Marker currentLocationMarker;
     private UiSettings uiSettings;
+    private Firebase ref;
+    HashMap<Marker, String> markerList;
 
     public static final String TAG = "MapActivity by TABI";
 
@@ -58,6 +71,39 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     .build();
         }
 
+        markerList = new HashMap<Marker, String>();
+
+        Firebase.setAndroidContext(this);
+        ref = new Firebase("https://flowww.firebaseio.com/");
+
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
+                    //Log.v("###", messageSnapshot.child("lat").getValue().toString());
+                    //Log.v("###", messageSnapshot.child("lng").getValue().toString());
+                    //create a new review
+                    double lat = (Double) (messageSnapshot.child("lat").getValue());
+                    double lng = (Double) (messageSnapshot.child("lng").getValue());
+
+
+                    Marker fountain = map.addMarker(new MarkerOptions()
+                            .position(new LatLng(lat, lng)));
+
+                    String key = messageSnapshot.getKey();
+                    markerList.put(fountain, key);
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+
+
     }
 
     @Override
@@ -77,15 +123,18 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         map = googleMap;
 
-        LatLng seattle = new LatLng(47.656146,-122.309663);
+
+        LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        LatLng currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
 
         map.setMyLocationEnabled(true);
+//        Circle circle = map.addCircle(new CircleOptions()
+//                .center(currentPosition)
+//                .radius(10)
+//                .fillColor(Color.argb(50, 0, 255, 0)));
 
-        currentLocationMarker = map.addMarker(new MarkerOptions()
-                .position(seattle)
-                .title("Seattle")
-        );
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(seattle, 13));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentPosition, 16));
         uiSettings = map.getUiSettings();
         uiSettings.setZoomControlsEnabled(true);
 
@@ -160,20 +209,18 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         if(location != null) {
             LatLng change = new LatLng(location.getLatitude(), location.getLongitude());
-            currentLocationMarker = map.addMarker(new MarkerOptions().position(change));
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(change, 13));
+            //currentLocationMarker = map.addMarker(new MarkerOptions().position(change));
         }
 
     }
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        if(marker.equals(currentLocationMarker)) {
-            // if click current location marker stuff
-            Intent intent = new Intent(MapActivity.this, DetailsView.class);
-//            intent.putExtra("EXTRA_TEXT", bundle); // not sure what string to use here...
-            startActivity(intent);
-        }
+        Intent intent = new Intent(MapActivity.this, DetailsView.class);
+        Bundle b = new Bundle();
+        b.putString("lastKey", markerList.get(marker));
+        intent.putExtras(b); // not sure what string to use here...
+        startActivity(intent);
         return true;
     }
 

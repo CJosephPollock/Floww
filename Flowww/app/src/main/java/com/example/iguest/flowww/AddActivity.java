@@ -1,6 +1,9 @@
 package com.example.iguest.flowww;
 
+import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.telecom.Call;
@@ -46,9 +49,14 @@ public class AddActivity extends AppCompatActivity {
         final String review = ((EditText) findViewById(R.id.set_init_review)).getText().toString();
 
 
+        LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        final double lng = location.getLongitude();
+        final double lat = location.getLatitude();
+
 
         Review initial = new Review(stars, review);
-        FountainLocation fl = new FountainLocation(name, locationDescription, status, initial);
+        FountainLocation fl = new FountainLocation(name, locationDescription, status, initial, lat, lng);
 
         ref.push().setValue(fl);
 
@@ -62,11 +70,13 @@ public class AddActivity extends AppCompatActivity {
                 Log.v("TEST   ", newKey);
 
                 Bundle bundle = new Bundle();
-                bundle.putString("name", name);
-                bundle.putString("locationDescription", locationDescription);
-                bundle.putInt("stars", stars);
-                bundle.putBoolean("status", status);
+//                bundle.putString("name", name);
+//                bundle.putString("locationDescription", locationDescription);
+//                bundle.putInt("stars", stars);
+//                bundle.putBoolean("status", status);
                 bundle.putString("lastKey", newKey);
+//                bundle.putDouble("lat", lat);
+//                bundle.putDouble("lng", lng);
                 Log.v("CHECK KEY", ""+ newKey);
 
                 Intent intent = new Intent(AddActivity.this, DetailsView.class);
@@ -102,21 +112,7 @@ public class AddActivity extends AppCompatActivity {
         // or pick on map? how to implement picking on map if that's what we go with?
     }
 
-    private static class FountainLocation {
-        String name;
-        String locationDescription;
-        boolean isWorking;
-        ArrayList<Review> reviews;
 
-
-        public FountainLocation(String name, String locationDescription, boolean isWorking, Review initialReview) {
-            this.name = name;
-            this.isWorking = isWorking;
-            this.locationDescription = locationDescription;
-            reviews = new ArrayList<Review>();
-            reviews.add(initialReview);
-        }
-    }
 
 
 

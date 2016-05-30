@@ -37,6 +37,7 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
     //create array list of reviews
     private ArrayList reviewsList;
     private ReviewAdapter adapter;
+    LatLng location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,17 +46,17 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
         Firebase.setAndroidContext(this);
 
         String key = getIntent().getExtras().getString("lastKey");
-        ref = new Firebase("https://flowww.firebaseio.com/" + key + "/reviews");
+        ref = new Firebase("https://flowww.firebaseio.com/" + key);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
 
-        TextView detailSourceName = (TextView)findViewById(R.id.txtDetailsSourceName);
-        ImageView statusIcon = (ImageView)findViewById(R.id.statusIcon);
-        TextView detailsSourceLocation = (TextView)findViewById(R.id.txtDetailsSourceLocation);
-        RatingBar overallRating = (RatingBar)findViewById(R.id.rtgDetailsSourceStars);
+        final TextView detailSourceName = (TextView)findViewById(R.id.txtDetailsSourceName);
+        final ImageView statusIcon = (ImageView)findViewById(R.id.statusIcon);
+        final TextView detailsSourceLocation = (TextView)findViewById(R.id.txtDetailsSourceLocation);
+        final RatingBar overallRating = (RatingBar)findViewById(R.id.rtgDetailsSourceStars);
 
         ListView reviews = (ListView)findViewById(R.id.listDetailsSourceReviews);
 
@@ -63,10 +64,34 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
         adapter = new ReviewAdapter(this, reviewsList);
 
 
+
         ref.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(DataSnapshot snapshot) {
 
+                Log.v("###", "GETTING DATA");
+
+                String name = snapshot.child("name").getValue().toString();
+                String desc = snapshot.child("locationDescription").getValue().toString();
+                double lat = Double.parseDouble(snapshot.child("lat").getValue().toString());
+                double lng = Double.parseDouble(snapshot.child("lng").getValue().toString());
+                boolean isWorking = Boolean.parseBoolean(snapshot.child("isWorking").getValue().toString());
+
+                location = new LatLng(lat, lng);
+                mMap.addMarker(new MarkerOptions().position(location));//.title(getIntent().getExtras().getString("name")));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 16.0f));
+
+                detailSourceName.setText(name);
+                ///set the textviews or whatever to the value in here.
+            }
+            @Override public void onCancelled(FirebaseError error) { }
+        });
+
+        ref.child("reviews").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int totalPoints = 0;
+                int numReviews = 0;
                 for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
                     Log.v("###", messageSnapshot.child("rating").getValue().toString());
                     Log.v("###", messageSnapshot.child("desc").getValue().toString());
@@ -75,9 +100,14 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
                     String desc = messageSnapshot.child("desc").getValue().toString();
                     Review review = new Review(rating, desc);
 
+                    totalPoints += rating;
+                    numReviews++;
+
+
                     //add it to the arraylist of reviews
                     reviewsList.add(review);
                 }
+                overallRating.setRating(totalPoints / numReviews);
             }
 
             @Override
@@ -88,9 +118,6 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
 
 
 
-
-        detailSourceName.setText(getIntent().getExtras().getString("name"));
-        detailsSourceLocation.setText(getIntent().getExtras().getString("locationDescription"));
 
 
 
@@ -161,9 +188,6 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+
     }
 }
