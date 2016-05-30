@@ -118,15 +118,7 @@ public class AddActivity extends AppCompatActivity {
         }
     }
 
-    private static class Review {
-        int rating;
-        String desc;
 
-        public Review(int rating, String desc) {
-            this.rating = rating;
-            this.desc = desc;
-        }
-    }
 
 
 }
