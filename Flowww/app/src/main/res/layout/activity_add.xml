@@ -72,5 +72,5 @@ tools:context="com.example.iguest.flowww.AddActivity">
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="Submit"
-    android:onClick="uplaodNewWaterSource"/>
+    android:onClick="uploadNewWaterSource"/>
 </LinearLayout>
