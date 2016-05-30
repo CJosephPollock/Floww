@@ -1,6 +1,7 @@
 package com.example.iguest.flowww;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.Rating;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
@@ -57,6 +59,14 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
         final ImageView statusIcon = (ImageView)findViewById(R.id.statusIcon);
         final TextView detailsSourceLocation = (TextView)findViewById(R.id.txtDetailsSourceLocation);
         final RatingBar overallRating = (RatingBar)findViewById(R.id.rtgDetailsSourceStars);
+        final Button addReviewBtn = (Button)findViewById(R.id.btnAddReview);
+        addReviewBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(DetailsView.this, AddReviewActivity.class));
+            }
+        });
+
 
         ListView reviews = (ListView)findViewById(R.id.listDetailsSourceReviews);
 
