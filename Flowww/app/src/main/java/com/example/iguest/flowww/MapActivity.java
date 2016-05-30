@@ -228,15 +228,29 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
+
+        MenuItem item = menu.findItem(R.id.changeAuth);
+        if(ref.getAuth() != null) {
+            item.setTitle("Log out");
+        } else {
+            item.setTitle("Log in");
+        }
+
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
-            case R.id.add_btn:
-                Intent intent = new Intent(MapActivity.this, AddActivity.class);
-                startActivity(intent);
+            case R.id.changeAuth:
+                if(ref.getAuth() != null) {
+                    ref.unauth();
+                    item.setTitle("Log in");
+                } else {
+                    Intent intent = new Intent(MapActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
+
                 return true; //I got this
 
             default:
