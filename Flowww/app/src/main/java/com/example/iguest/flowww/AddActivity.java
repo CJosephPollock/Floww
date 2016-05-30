@@ -12,6 +12,9 @@ import android.widget.ToggleButton;
 
 import com.firebase.client.Firebase;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AddActivity extends AppCompatActivity {
     public final String TAG = "AddActivity";
     private Firebase ref;
@@ -45,7 +48,8 @@ public class AddActivity extends AppCompatActivity {
         bundle.putString("review", review);
 
 
-        FountainLocation fl = new FountainLocation("butts", true);
+        Review initial = new Review(5, "great fountain but loses pressure when the toilets flush");
+        FountainLocation fl = new FountainLocation("MGH 4th floor fountain", "on the fourth floor of MGH near room 440", true, initial);
 
         ref.push().setValue(fl);
 
@@ -61,11 +65,27 @@ public class AddActivity extends AppCompatActivity {
 
     private static class FountainLocation {
         String name;
+        String locationDescription;
         boolean isWorking;
+        ArrayList<Review> reviews;
 
-        public FountainLocation(String name, boolean isWorking) {
+
+        public FountainLocation(String name, String locationDescription, boolean isWorking, Review initialReview) {
             this.name = name;
             this.isWorking = isWorking;
+            this.locationDescription = locationDescription;
+            reviews = new ArrayList<Review>();
+            reviews.add(initialReview);
+        }
+    }
+
+    private static class Review {
+        int rating;
+        String desc;
+
+        public Review(int rating, String desc) {
+            this.rating = rating;
+            this.desc = desc;
         }
     }
 
