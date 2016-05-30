@@ -10,7 +10,11 @@ import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.ToggleButton;
 
+import com.firebase.client.ChildEventListener;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +22,7 @@ import java.util.List;
 public class AddActivity extends AppCompatActivity {
     public final String TAG = "AddActivity";
     private Firebase ref;
+    public String newKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,31 +37,65 @@ public class AddActivity extends AppCompatActivity {
 
     public void uploadNewWaterSource(View v) {
         EditText nameInput = (EditText) findViewById(R.id.set_name);
-        String name = nameInput.getText().toString();
+        final String name = nameInput.getText().toString();
         EditText locationDescriptionInput = (EditText) findViewById(R.id.set_location_description);
-        String locationDescription = locationDescriptionInput.getText().toString();
+        final String locationDescription = locationDescriptionInput.getText().toString();
         RatingBar starsInput = (RatingBar) findViewById(R.id.set_rating);
-        int stars = starsInput.getNumStars();
-        boolean status = ((ToggleButton) findViewById(R.id.set_toggle)).isChecked();
-        String review = ((EditText) findViewById(R.id.set_init_review)).getText().toString();
-
-        Bundle bundle = new Bundle();
-        bundle.putString("name", name);
-        bundle.putString("locationDescription", locationDescription);
-        bundle.putInt("stars", stars);
-        bundle.putBoolean("status", status);
-        bundle.putString("review", review);
+        final int stars = starsInput.getNumStars();
+        final boolean status = ((ToggleButton) findViewById(R.id.set_toggle)).isChecked();
+        final String review = ((EditText) findViewById(R.id.set_init_review)).getText().toString();
 
 
-        Review initial = new Review(5, "great fountain but loses pressure when the toilets flush");
-        FountainLocation fl = new FountainLocation("MGH 4th floor fountain", "on the fourth floor of MGH near room 440", true, initial);
+
+        Review initial = new Review(stars, review);
+        FountainLocation fl = new FountainLocation(name, locationDescription, status, initial);
 
         ref.push().setValue(fl);
 
 
-        Intent intent = new Intent(AddActivity.this, DetailsView.class);
-        //intent.putExtra("EXTRA_TEXT", bundle); // not sure what string to use here...
-        startActivity(intent);
+        ref.limitToLast(1).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                String recentAddKey = dataSnapshot.getKey();
+                Log.v("TEST   ", recentAddKey);
+                newKey = recentAddKey;
+                Log.v("TEST   ", newKey);
+
+                Bundle bundle = new Bundle();
+                bundle.putString("name", name);
+                bundle.putString("locationDescription", locationDescription);
+                bundle.putInt("stars", stars);
+                bundle.putBoolean("status", status);
+                bundle.putString("lastKey", newKey);
+                Log.v("CHECK KEY", ""+ newKey);
+
+                Intent intent = new Intent(AddActivity.this, DetailsView.class);
+                intent.putExtras(bundle); // not sure what string to use here...
+                startActivity(intent);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+
 
         // how to add that data to the firebase?
         // and how do we want to add the location of the fountain? by current location
