@@ -87,7 +87,7 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
             @Override
             public void onDataChange(DataSnapshot snapshot) {
 
-                Log.v("###", "GETTING DATA");
+                Log.v("###", "GETTING DATA: " + snapshot);
 
                 String name = snapshot.child("name").getValue().toString();
                 String desc = snapshot.child("locationDescription").getValue().toString();

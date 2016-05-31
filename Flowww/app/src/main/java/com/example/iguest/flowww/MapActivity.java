@@ -107,6 +107,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         FloatingActionButton fab = (FloatingActionButton)findViewById(R.id.add_resource_button);
         fab.setImageResource(R.drawable.add_water);
 
+        if(ref.getAuth() != null) {
+            fab.setVisibility(View.VISIBLE);
+        } else {
+            fab.setVisibility(View.GONE);
+        }
+
         if (fab != null) {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
