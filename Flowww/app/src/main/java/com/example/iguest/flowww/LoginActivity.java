@@ -28,6 +28,7 @@ public class LoginActivity extends AppCompatActivity {
 
         Button login = (Button) findViewById(R.id.loginButton);
         Button signUp = (Button) findViewById(R.id.signUpButton);
+        Button toMapButton = (Button) findViewById(R.id.toMapButton);
 
 
 
@@ -61,7 +62,18 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
                 //intent.putExtra("EXTRA_TEXT", null); // not sure what string to use here...
-                startActivity(intent);            }
+                startActivity(intent);
+            }
+        });
+
+
+        toMapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, MapActivity.class);
+                //intent.putExtra("EXTRA_TEXT", null); // not sure what string to use here...
+                startActivity(intent);
+            }
         });
 
     }

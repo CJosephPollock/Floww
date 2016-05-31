@@ -7,13 +7,23 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.iguest.flowww.SignUpActivity">
+    tools:context="com.example.iguest.flowww.SignUpActivity"
+    android:background="@drawable/background">
 
 
+
+    <ImageView
+        android:id="@+id/login_icon"
+        android:src="@drawable/login_icon"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_centerHorizontal="true"
+        />
 
     <EditText
         android:id="@+id/username"
         android:hint="Username"
+        android:layout_below="@id/login_icon"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
      
@@ -28,10 +38,13 @@
     <Button
         android:id="@+id/signUpButton"
         android:layout_below="@id/password"
-        android:text="Sign Up"
+        android:text="Register"
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/button"/>
 
 
 

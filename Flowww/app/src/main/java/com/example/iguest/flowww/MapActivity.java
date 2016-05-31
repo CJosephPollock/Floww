@@ -35,6 +35,7 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -90,7 +91,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
 
                     Marker fountain = map.addMarker(new MarkerOptions()
-                            .position(new LatLng(lat, lng)));
+                            .position(new LatLng(lat, lng)).icon(BitmapDescriptorFactory.fromResource(R.drawable.map_icon)));
 
                     String key = messageSnapshot.getKey();
                     markerList.put(fountain, key);
@@ -104,6 +105,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         });
 
         FloatingActionButton fab = (FloatingActionButton)findViewById(R.id.add_resource_button);
+        fab.setImageResource(R.drawable.add_water);
+
         if (fab != null) {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
