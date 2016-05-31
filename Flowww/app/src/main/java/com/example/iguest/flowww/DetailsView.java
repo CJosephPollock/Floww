@@ -54,11 +54,16 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        final Button addReviewBtn = (Button)findViewById(R.id.btnAddReview);
+        if(ref.getAuth() != null) {
+            addReviewBtn.setVisibility(View.VISIBLE);
+        } else {
+            addReviewBtn.setVisibility(View.GONE);
+        }
 
         final TextView detailSourceName = (TextView)findViewById(R.id.txtDetailsSourceName);
         final ImageView statusIcon = (ImageView)findViewById(R.id.statusIcon);
         final TextView detailsSourceLocation = (TextView)findViewById(R.id.txtDetailsSourceLocation);
-        final Button addReviewBtn = (Button)findViewById(R.id.btnAddReview);
         addReviewBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,7 +140,7 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
             public void onDataChange(DataSnapshot dataSnapshot) {
                 final RatingBar overallRating = (RatingBar)findViewById(R.id.rtgDetailsSourceStars);
                 overallRating.setRating(0.0f);
-                
+
                 int totalPoints = 0;
                 int numReviews = 0;
                 for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
