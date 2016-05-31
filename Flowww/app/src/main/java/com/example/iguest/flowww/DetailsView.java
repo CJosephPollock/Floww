@@ -47,7 +47,7 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_details);
         Firebase.setAndroidContext(this);
 
-        String key = getIntent().getExtras().getString("lastKey");
+        final String key = getIntent().getExtras().getString("lastKey");
         ref = new Firebase("https://flowww.firebaseio.com/" + key);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -58,12 +58,15 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
         final TextView detailSourceName = (TextView)findViewById(R.id.txtDetailsSourceName);
         final ImageView statusIcon = (ImageView)findViewById(R.id.statusIcon);
         final TextView detailsSourceLocation = (TextView)findViewById(R.id.txtDetailsSourceLocation);
-        final RatingBar overallRating = (RatingBar)findViewById(R.id.rtgDetailsSourceStars);
         final Button addReviewBtn = (Button)findViewById(R.id.btnAddReview);
         addReviewBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(DetailsView.this, AddReviewActivity.class));
+                Intent intent = new Intent(DetailsView.this, AddReviewActivity.class);
+                Bundle b = new Bundle();
+                b.putString("key", key);
+                intent.putExtras(b);
+                startActivity(intent);
             }
         });
 
@@ -97,40 +100,6 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
             @Override public void onCancelled(FirebaseError error) { }
         });
 
-        ref.child("reviews").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                int totalPoints = 0;
-                int numReviews = 0;
-                for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
-                    Log.v("###", messageSnapshot.child("rating").getValue().toString());
-                    Log.v("###", messageSnapshot.child("desc").getValue().toString());
-                    //create a new review
-                    int rating = Integer.parseInt(messageSnapshot.child("rating").getValue().toString());
-                    String desc = messageSnapshot.child("desc").getValue().toString();
-                    Review review = new Review(rating, desc);
-
-                    totalPoints += rating;
-                    numReviews++;
-
-
-                    //add it to the arraylist of reviews
-                    reviewsList.add(review);
-                }
-                overallRating.setRating(totalPoints / numReviews);
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
-
-
-
-
-
-
 
 
 
@@ -152,6 +121,50 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
 
 
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.v("RESUME", "resuming...");
+        calculateRating();
+    }
+
+    public void calculateRating() {
+        ref.child("reviews").orderByChild("timestamp").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                final RatingBar overallRating = (RatingBar)findViewById(R.id.rtgDetailsSourceStars);
+                overallRating.setRating(0.0f);
+                
+                int totalPoints = 0;
+                int numReviews = 0;
+                for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
+                    Log.v("###", messageSnapshot.child("rating").getValue().toString());
+                    Log.v("###", messageSnapshot.child("desc").getValue().toString());
+                    //create a new review
+                    int rating = Integer.parseInt(messageSnapshot.child("rating").getValue().toString());
+                    String desc = messageSnapshot.child("desc").getValue().toString();
+                    Long time = Long.parseLong(messageSnapshot.child("timestamp").getValue().toString());
+
+                    Review review = new Review(rating, desc, time);
+
+                    totalPoints += rating;
+                    numReviews++;
+
+
+                    //add it to the arraylist of reviews
+                    reviewsList.add(review);
+                }
+                overallRating.setRating(totalPoints / numReviews);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
+
 
     public class ReviewAdapter extends ArrayAdapter<Review> {
         public ReviewAdapter(Context context, ArrayList<Review> reviews) {

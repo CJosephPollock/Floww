@@ -19,6 +19,7 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import java.security.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +56,7 @@ public class AddActivity extends AppCompatActivity {
         final double lat = location.getLatitude();
 
 
-        Review initial = new Review(stars, review);
+        Review initial = new Review(stars, review, System.currentTimeMillis()/1000);
         FountainLocation fl = new FountainLocation(name, locationDescription, status, initial, lat, lng);
 
         ref.push().setValue(fl);
@@ -105,11 +106,6 @@ public class AddActivity extends AppCompatActivity {
             }
         });
 
-
-
-        // how to add that data to the firebase?
-        // and how do we want to add the location of the fountain? by current location
-        // or pick on map? how to implement picking on map if that's what we go with?
     }
 
 

@@ -6,12 +6,14 @@ package com.example.iguest.flowww;
 public class Review {
     int rating;
     String desc;
+    Long timestamp;
 
     public Review() {}
 
 
-    public Review(int rating, String desc) {
+    public Review(int rating, String desc, Long timestamp) {
         this.rating = rating;
         this.desc = desc;
+        this.timestamp = timestamp;
     }
 }
