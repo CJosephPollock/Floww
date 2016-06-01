@@ -40,6 +40,7 @@ public class SignUpActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(Map<String, Object> result) {
                         System.out.println("Successfully created user account with uid: " + result.get("uid"));
+
                         ref.authWithPassword(username.getText().toString(), password.getText().toString(), new Firebase.AuthResultHandler() {
                         @Override
                         public void onAuthenticated(AuthData authData) {

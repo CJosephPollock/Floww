@@ -19,7 +19,9 @@ tools:context="com.example.iguest.flowww.DetailsView">
 <ScrollView
         android:id="@+id/viewScrollDetailsInformation"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -115,9 +117,12 @@ tools:context="com.example.iguest.flowww.DetailsView">
             android:id="@+id/listDetailsSourceReviews"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="source reviews"/>
+            />
 
     </LinearLayout>
 
+
 </ScrollView>
+
+
 </LinearLayout>

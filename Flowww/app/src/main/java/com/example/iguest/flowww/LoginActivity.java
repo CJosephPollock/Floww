@@ -24,6 +24,10 @@ public class LoginActivity extends AppCompatActivity {
         Firebase.setAndroidContext(this);
         ref = new Firebase("https://flowww.firebaseio.com/");
 
+        if(ref.getAuth() != null) {
+            loadMap();
+        }
+
         setContentView(R.layout.activity_login);
 
         Button login = (Button) findViewById(R.id.loginButton);
@@ -44,9 +48,7 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onAuthenticated(AuthData authData) {
                         System.out.println("User ID: " + authData.getUid() + ", Provider: " + authData.getProvider());
-                    Intent intent = new Intent(LoginActivity.this, MapActivity.class);
-                    //intent.putExtra("EXTRA_TEXT", null); // not sure what string to use here...
-                    startActivity(intent);
+                        loadMap();
                         }
                 @Override
                 public void onAuthenticationError(FirebaseError firebaseError) {
@@ -76,10 +78,18 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+
     }
 
+    public void loadMap() {
+        Intent intent = new Intent(LoginActivity.this, MapActivity.class);
+        startActivity(intent);
+    }
 
 }
+
+
+
 
 
 
