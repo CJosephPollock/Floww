@@ -17,6 +17,19 @@
 #}
 
 # Basic ProGuard rules for Firebase Android SDK 2.0.0+
+
+# Proguard configuration for Jackson 2.x (fasterxml package instead of codehaus package)
+
+    -keep class com.fasterxml.jackson.databind.ObjectMapper {
+        public <methods>;
+        protected <methods>;
+    }
+    -keep class com.fasterxml.jackson.databind.ObjectWriter {
+        public ** writeValueAsString(**);
+    }
+
+-keepnames class edu.uw.flowww.** { *; }
+-keepnames class edu.uw.jpollock.flowww.** { *; }
 -keep class com.firebase.** { *; }
 -keep class org.apache.** { *; }
 -keepnames class com.fasterxml.jackson.** { *; }

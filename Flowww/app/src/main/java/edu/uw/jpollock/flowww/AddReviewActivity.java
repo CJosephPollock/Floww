@@ -40,7 +40,7 @@ public class AddReviewActivity extends AppCompatActivity{
 
                 final String reviewTitle = ((EditText) findViewById(R.id.review_title)).getText().toString();
 
-                Review newReview = new Review(stars, reviewDesc, reviewTitle, System.currentTimeMillis()/1000);
+                Review newReview = new Review(stars, reviewDesc, reviewTitle, "2835728382");
                 ref.push().setValue(newReview);
 
 

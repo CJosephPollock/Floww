@@ -191,7 +191,7 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
                     String title = messageSnapshot.child("title").getValue().toString();
                     Long time = Long.parseLong(messageSnapshot.child("timestamp").getValue().toString());
 
-                    Review review = new Review(rating, desc, title, time);
+                    Review review = new Review(rating, desc, title, "28388237");
 
                     totalPoints += rating;
                     numReviews++;

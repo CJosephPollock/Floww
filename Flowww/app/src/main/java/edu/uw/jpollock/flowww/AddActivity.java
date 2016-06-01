@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.ServerValue;
 
 public class AddActivity extends AppCompatActivity {
     public final String TAG = "AddActivity";
@@ -55,53 +57,59 @@ public class AddActivity extends AppCompatActivity {
         final double lat = location.getLatitude();
 
         // INSTANTIATE INITIAL WATER REVIEW FOR NEW WATER SOURCE
-        Review initial = new Review(stars, reviewDesc, reviewTitle, System.currentTimeMillis()/1000);
+        Review initial = new Review(stars, reviewDesc, reviewTitle, "113523223");
         // INSTANTIATE WATER SOURCE LOCATION
         FountainLocation fl = new FountainLocation(name, locationDescription, status, initial, lat, lng);
 
         // ADD WATER SOURCE LOCATION INFORMATION TO FIREBASE
-        ref.push().setValue(fl);
+//        try {
+            ref.push().setValue(fl);
+
+            // GET MOST RECENTLY ADD WATER SOURCE FROM FIREBASE
+            ref.limitToLast(1).addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    String recentAddKey = dataSnapshot.getKey();
+
+                    newKey = recentAddKey;
+
+                    Bundle bundle = new Bundle();
+                    bundle.putString("lastKey", newKey);
+
+                    Intent intent = new Intent(AddActivity.this, DetailsView.class);
+                    intent.putExtras(bundle);
+                    Toast.makeText(getApplicationContext(), "Fountain Added", Toast.LENGTH_SHORT).show();
+                    startActivity(intent);
+
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+
+                }
+            });
+//        } catch(Exception e) {
+//            Log.getStackTraceString(e);
+//            Toast.makeText(this, "Excep: " + e, Toast.LENGTH_LONG).show();
+//        }
 
 
 
-        // GET MOST RECENTLY ADD WATER SOURCE FROM FIREBASE
-        ref.limitToLast(1).addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                String recentAddKey = dataSnapshot.getKey();
-
-                newKey = recentAddKey;
-
-                Bundle bundle = new Bundle();
-                bundle.putString("lastKey", newKey);
-
-                Intent intent = new Intent(AddActivity.this, DetailsView.class);
-                intent.putExtras(bundle);
-                Toast.makeText(getApplicationContext(), "Fountain Added", Toast.LENGTH_SHORT).show();
-                startActivity(intent);
-
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
 
     }
 

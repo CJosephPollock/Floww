@@ -1,5 +1,7 @@
 package edu.uw.jpollock.flowww;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import java.util.ArrayList;
 
 /**
@@ -7,6 +9,7 @@ import java.util.ArrayList;
  */
 
 // WATER SOURCE/FOUNTAIN LOCATION INFORMATION
+@JsonSerialize
 public class FountainLocation {
     String name; // name
     String locationDescription; // location description

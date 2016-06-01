@@ -104,7 +104,7 @@ public class ReviewDetail extends AppCompatActivity {
 
                     Long time = Long.parseLong(messageSnapshot.child("timestamp").getValue().toString());
 
-                    Review review = new Review(rating, desc, title, time);
+                    Review review = new Review(rating, desc, title, "29873592");
 
                     //add it to the arraylist of reviews
                     reviewsList.add(review);
