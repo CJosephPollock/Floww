@@ -1,4 +1,4 @@
-package com.example.iguest.flowww;
+package edu.uw.jpollock.flowww;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package com.example.iguest.flowww;
+package edu.uw.jpollock.flowww;
 
 /**
  * Created by iguest on 5/30/16.

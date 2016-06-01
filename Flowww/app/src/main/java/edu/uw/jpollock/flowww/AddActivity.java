@@ -1,4 +1,4 @@
-package com.example.iguest.flowww;
+package edu.uw.jpollock.flowww;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,24 +6,17 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.telecom.Call;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.Switch;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
-
-import java.security.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
 
 public class AddActivity extends AppCompatActivity {
     public final String TAG = "AddActivity";
