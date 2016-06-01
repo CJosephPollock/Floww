@@ -276,7 +276,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     startActivity(intent);
                 }
                 setFABVisibility();
-                return true; 
+                return true;
 
             default:
                 return super.onOptionsItemSelected(item);

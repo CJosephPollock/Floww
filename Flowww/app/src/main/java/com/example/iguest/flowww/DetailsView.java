@@ -26,7 +26,9 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
@@ -96,10 +98,20 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
                 boolean isWorking = Boolean.parseBoolean(snapshot.child("isWorking").getValue().toString());
 
                 location = new LatLng(lat, lng);
-                mMap.addMarker(new MarkerOptions().position(location));//.title(getIntent().getExtras().getString("name")));
+                Marker fountain = mMap.addMarker(new MarkerOptions()
+                        .position(location).icon(BitmapDescriptorFactory.fromResource(R.drawable.map_icon)));
+                //mMap.addMarker(new MarkerOptions().position(location));//.title(getIntent().getExtras().getString("name")));
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 16.0f));
 
                 detailSourceName.setText(name);
+
+                if(isWorking) {
+                    statusIcon.setImageResource(R.drawable.is_working);
+                } else {
+                    statusIcon.setImageResource(R.drawable.not_working);
+                }
+
+
                 ///set the textviews or whatever to the value in here.
             }
             @Override public void onCancelled(FirebaseError error) { }
