@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
@@ -54,6 +55,7 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onAuthenticationError(FirebaseError firebaseError) {
                         // there was an error
+                    Toast.makeText(LoginActivity.this, "Error Logging In", Toast.LENGTH_SHORT).show();
                         }
                 });
 
