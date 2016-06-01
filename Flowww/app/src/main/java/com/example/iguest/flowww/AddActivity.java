@@ -45,7 +45,8 @@ public class AddActivity extends AppCompatActivity {
         EditText locationDescriptionInput = (EditText) findViewById(R.id.set_location_description);
         final String locationDescription = locationDescriptionInput.getText().toString();
         RatingBar starsInput = (RatingBar) findViewById(R.id.set_rating);
-        final int stars = (int) starsInput.getRating();
+
+        final float stars = starsInput.getRating();
         final boolean status = ((ToggleButton) findViewById(R.id.set_toggle)).isChecked();
         final String review = ((EditText) findViewById(R.id.set_init_review)).getText().toString();
 

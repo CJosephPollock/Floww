@@ -178,7 +178,7 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
                 final RatingBar overallRating = (RatingBar)findViewById(R.id.rtgDetailsSourceStars);
                 overallRating.setRating(0.0f);
 
-                int totalPoints = 0;
+                float totalPoints = 0;
                 int numReviews = 0;
 
                 reviewsList.clear();
@@ -199,6 +199,12 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
 
                     //add it to the arraylist of reviews
                     reviewsList.add(review);
+                }
+                TextView ratingCount = (TextView) findViewById(R.id.txtDetailsRatingCount);
+                if(numReviews == 1) {
+                    ratingCount.setText("1 review");
+                } else {
+                    ratingCount.setText(numReviews + " reviews");
                 }
                 overallRating.setRating( (float) totalPoints / numReviews);
                 getListViewHeight(reviews);
