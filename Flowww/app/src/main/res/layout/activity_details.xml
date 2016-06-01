@@ -91,7 +91,9 @@ tools:context="com.example.iguest.flowww.DetailsView">
             android:layout_height="65dp"
             android:isIndicator="true"
             android:layout_gravity="center"
-            android:paddingTop="16dp"/>
+            android:paddingTop="16dp"
+            android:stepSize="0.5"
+            />
         <!--android:scaleX=".4"-->
         <!--android:scaleY=".4"-->
         <!--android:transformPivotX="0dp"-->

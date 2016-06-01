@@ -182,12 +182,12 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
                 int numReviews = 0;
 
                 reviewsList.clear();
-                
+
                 for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
                     Log.v("###", messageSnapshot.child("rating").getValue().toString());
                     Log.v("###", messageSnapshot.child("desc").getValue().toString());
                     //create a new review
-                    int rating = Integer.parseInt(messageSnapshot.child("rating").getValue().toString());
+                    float rating = Float.parseFloat(messageSnapshot.child("rating").getValue().toString());
                     String desc = messageSnapshot.child("desc").getValue().toString();
                     Long time = Long.parseLong(messageSnapshot.child("timestamp").getValue().toString());
 
@@ -200,7 +200,7 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
                     //add it to the arraylist of reviews
                     reviewsList.add(review);
                 }
-                overallRating.setRating(totalPoints / numReviews);
+                overallRating.setRating( (float) totalPoints / numReviews);
                 getListViewHeight(reviews);
             }
 

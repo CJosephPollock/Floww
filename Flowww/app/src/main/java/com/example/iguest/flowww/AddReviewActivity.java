@@ -33,7 +33,7 @@ public class AddReviewActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 RatingBar starsInput = (RatingBar) findViewById(R.id.set_review_rating);
-                final int stars = (int) starsInput.getRating();
+                final float stars = starsInput.getRating();
                 final String review = ((EditText) findViewById(R.id.review_text)).getText().toString();
 
 
