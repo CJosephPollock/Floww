@@ -50,12 +50,25 @@ tools:context="com.example.iguest.flowww.AddActivity">
     android:layout_height="wrap_content"
     android:text="Status:" />
 
-<ToggleButton
-    android:id="@+id/set_toggle"
-    android:layout_width="wrap_content"
+<RelativeLayout
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:textOff="Out of order"
-    android:textOn="Available"/>
+    android:paddingBottom="10dp">
+
+    <TextView
+        android:id="@+id/available_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="10dp"
+        android:textSize="20sp"
+        android:text="Available"/>
+
+    <Switch
+        android:id="@+id/available_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/available_label"/>
+</RelativeLayout>
 
 <TextView
     android:layout_width="wrap_content"
@@ -66,7 +79,7 @@ tools:context="com.example.iguest.flowww.AddActivity">
     android:id="@+id/set_init_review"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:hint="Give an initial review/description of the water source"/>
+    android:hint="Give an initial review of the water source"/>
 
 <Button
     android:layout_width="match_parent"
