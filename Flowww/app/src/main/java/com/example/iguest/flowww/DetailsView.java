@@ -48,13 +48,17 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
     ListView reviews;
 
 
+
     public void getListViewHeight(ListView listView) {
         ListAdapter mAdapter = listView.getAdapter();
-        System.out.println("WHOO23 " + mAdapter.getCount());
 
         int totalHeight = 0;
 
         for (int i = 0; i < mAdapter.getCount(); i++) {
+
+//            Review r = (Review) reviewsList.get(i);
+//            totalHeight += r.desc.length() / 1.12;
+
             View mView = mAdapter.getView(i, null, listView);
 
             mView.measure(
@@ -63,7 +67,7 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
                     View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
 
             totalHeight += mView.getMeasuredHeight();
-            Log.w("HEIGHT" + i, String.valueOf(totalHeight));
+            Log.w("HEIGHT" + i, String.valueOf(mView.getMeasuredHeight()));
 
         }
 
@@ -82,6 +86,9 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
         reviews = (ListView)findViewById(R.id.listDetailsSourceReviews);
 
         Firebase.setAndroidContext(this);
+
+
+        reviews.setScrollContainer(false);
 
         final String key = getIntent().getExtras().getString("lastKey");
         ref = new Firebase("https://flowww.firebaseio.com/" + key);
@@ -174,10 +181,10 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
     @Override
     protected void onResume() {
         super.onResume();
-        Log.v("RESUME", "resuming...");
-        //reviewsList = new ArrayList<Review>();
         calculateRating();
     }
+
+
 
     public void calculateRating() {
         ref.child("reviews").orderByChild("timestamp").addValueEventListener(new ValueEventListener() {
@@ -240,14 +247,14 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.activity_list_item, parent, false);
             }
             //Lookup view for data population
-            TextView rating = (TextView)convertView.findViewById(R.id.rating_item);
+            RatingBar rating = (RatingBar)convertView.findViewById(R.id.rating_item);
             TextView desc = (TextView)convertView.findViewById(R.id.desc_item);
 
             Log.v("CHECK ", "" + review.rating);
             Log.v("CHECK 2 ", review.desc);
 
             //Set the fields for the "row"
-            rating.setText("" + review.rating);
+            rating.setRating(review.rating);
             desc.setText(review.desc);
 
 

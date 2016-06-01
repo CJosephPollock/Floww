@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RatingBar;
+import android.widget.Switch;
 import android.widget.ToggleButton;
 
 import com.firebase.client.ChildEventListener;
@@ -47,7 +48,7 @@ public class AddActivity extends AppCompatActivity {
         RatingBar starsInput = (RatingBar) findViewById(R.id.set_rating);
 
         final float stars = starsInput.getRating();
-        final boolean status = ((ToggleButton) findViewById(R.id.set_toggle)).isChecked();
+        final boolean status = ((Switch) findViewById(R.id.available_switch)).isChecked();
         final String review = ((EditText) findViewById(R.id.set_init_review)).getText().toString();
 
 
@@ -82,7 +83,7 @@ public class AddActivity extends AppCompatActivity {
                 Log.v("CHECK KEY", ""+ newKey);
 
                 Intent intent = new Intent(AddActivity.this, DetailsView.class);
-                intent.putExtras(bundle); // not sure what string to use here...
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
 
