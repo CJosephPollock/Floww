@@ -164,6 +164,14 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
     }
 
     @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MapActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         Log.v("RESUME", "resuming...");
