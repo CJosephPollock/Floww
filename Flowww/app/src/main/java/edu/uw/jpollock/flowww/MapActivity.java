@@ -48,17 +48,19 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private Firebase ref;
     HashMap<Marker, String> markerList;
 
-    public static final String TAG = "MapActivity by TABI";
+    public static final String TAG = "MapActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
+        // DISPLAY MAP (FRAGMENT)
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        // BUILD GOOGLE API CONNECTION
         if(googleApiClient == null) {
             googleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)
@@ -67,11 +69,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     .build();
         }
 
+        // LIST OF MARKERS ON MAP
         markerList = new HashMap<Marker, String>();
 
         Firebase.setAndroidContext(this);
         ref = new Firebase("https://flowww.firebaseio.com/");
 
+        // ADD MARKER TO MAP WITH CURRENT LOCATION LATITUDE AND LONGITUDE
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -98,12 +102,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }
         });
 
+        // FLOATING ACTION BUTTON
         FloatingActionButton fab = (FloatingActionButton)findViewById(R.id.add_resource_button);
         fab.setImageResource(R.drawable.add_water);
 
         setFABVisibility();
 
-
+        // ON CLICK OF FLOATING ACTION BUTTON = ADD NEW WATER SOURCE (ADDACTIVITY)
         if (fab != null) {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -116,6 +121,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     }
 
+    // IF LOGGED IN CAN ADD NEW WATER SOURCE, IF NOT THEN NOT ABLE TO
     public void setFABVisibility() {
         FloatingActionButton fab = (FloatingActionButton)findViewById(R.id.add_resource_button);
         if(ref.getAuth() != null) {
@@ -125,18 +131,21 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
     }
 
+    // ON START - CONNECT TO GOOGLE MAPS API
     @Override
     protected void onStart() {
         googleApiClient.connect();
         super.onStart();
     }
 
+    // ON STOP - DISCONNECT TO GOOGLE MAPS API
     @Override
     protected void onStop() {
         googleApiClient.disconnect();
         super.onStop();
     }
 
+    // ON MAP LOAD/READY
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
@@ -145,15 +154,16 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
         Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+        // ENABLE CURRENT LOCATION
         LatLng currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
 
         map.setMyLocationEnabled(true);
-//        Circle circle = map.addCircle(new CircleOptions()
-//                .center(currentPosition)
-//                .radius(10)
-//                .fillColor(Color.argb(50, 0, 255, 0)));
 
+        // SET VIEW OF MAP TO CURRENT LOCATION
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentPosition, 16));
+
+        // ENABLE ZOOM CONTROLS ON MAP
         uiSettings = map.getUiSettings();
         uiSettings.setZoomControlsEnabled(true);
 
@@ -170,7 +180,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
 
-
+    // ON CONNECTED OF GOOGLE MAPS LOCATION
     @Override
     public void onConnected(Bundle bundle) {
         getLocation(null);
@@ -192,6 +202,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     }
 
+    // GETS LOCATION
     public Location getLocation(View v) {
         Location location = null;
 
@@ -204,6 +215,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         return location;
     }
 
+    // PERMISSION REQUEST TO CONNECT
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
@@ -227,6 +239,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     }
 
+
+    // UPDATES MARKER OF LOCATION WHEN NOTICED IT CHANGES
     @Override
     public void onLocationChanged(Location location) {
 
@@ -241,6 +255,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     }
 
+    // WHEN CLICK ON MARKER, TAKES YOU TO DETAILS VIEW OF THAT WATER SOURCE MARKER
     @Override
     public boolean onMarkerClick(Marker marker) {
         Intent intent = new Intent(MapActivity.this, DetailsView.class);
@@ -251,6 +266,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         return true;
     }
 
+    // MENU WITH LOGIN/LOGOUT TOGGLE BUTTON DEPENDING ON WHETHER YOU ARE LOGGED IN OR NOT
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -266,6 +282,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         return true;
     }
 
+    // IF LOGGED IN, GIVES YOU LOG OUT BUTTON AND ALLOWS YOU TO SEE FAB BUTTON, OTHERWISE SHOWS LOG IN BUTTON WHICH TAKES
+    // YOU TO LOGIN ACTIVITY
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {

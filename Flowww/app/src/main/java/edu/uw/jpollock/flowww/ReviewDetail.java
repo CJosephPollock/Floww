@@ -32,26 +32,32 @@ public class ReviewDetail extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review_detail);
+
+        // sets listview of reviews added to water source
         reviews = (ListView)findViewById(R.id.listDetailsSourceReviews);
 
         Firebase.setAndroidContext(this);
         final String key = getIntent().getExtras().getString("lastKey");
         ref = new Firebase("https://flowww.firebaseio.com/" + key);
 
+        // LIST OF REVIEWS
         reviewsList = new ArrayList<Review>();
         adapter = new ReviewAdapter(this, reviewsList);
+
+        // LOADS LIST OF REVIEWS ADDED
         loadReviews();
 
         reviews.setAdapter(adapter);
 
     }
 
-
+    // CUSTOM ADAPTER FOR REVIEWS
     public class ReviewAdapter extends ArrayAdapter<Review> {
         public ReviewAdapter(Context context, ArrayList<Review> reviews) {
             super(context, 0, reviews);
         }
 
+        // VIEW OF REVIEW ITEMS/POSTS
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             //Get the data for the item in a given position
@@ -79,6 +85,7 @@ public class ReviewDetail extends AppCompatActivity {
         }
     }
 
+    // LOADS REVIEWS LIST BY MOST RECENT
     public void loadReviews() {
         ref.child("reviews").orderByChild("timestamp").addValueEventListener(new ValueEventListener() {
             @Override
@@ -89,8 +96,9 @@ public class ReviewDetail extends AppCompatActivity {
                     tempList.add(messageSnapshot);
                 }
 
-                Collections.reverse(tempList);
+                Collections.reverse(tempList); // most recent first
 
+                // GOES THROUGH DATA OF REVIEWS AND ADDS TO REVIEWSLIST TO SHOW IN LIST VIEW
                 for(DataSnapshot messageSnapshot : tempList) {
                     //create a new review
                     float rating = Float.parseFloat(messageSnapshot.child("rating").getValue().toString());
