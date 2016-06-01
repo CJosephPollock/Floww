@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.location.Location;
 import android.location.LocationManager;
 import android.support.annotation.NonNull;
@@ -15,10 +16,13 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -161,10 +165,18 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentPosition, 16));
         uiSettings = map.getUiSettings();
-        //uiSettings.setZoomControlsEnabled(true);
+        uiSettings.setZoomControlsEnabled(true);
 
         map.setOnMarkerClickListener(this);
 
+    }
+
+    @Override
+    public void onBackPressed() {
+//        Intent intent = new Intent(this, MapActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        startActivity(intent);
+//        finish();
     }
 
 

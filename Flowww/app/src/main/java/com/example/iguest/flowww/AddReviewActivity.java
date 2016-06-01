@@ -8,6 +8,7 @@ import android.telecom.Call;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RatingBar;
+import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 
@@ -46,6 +47,8 @@ public class AddReviewActivity extends AppCompatActivity{
                 Bundle b = new Bundle();
                 b.putString("lastKey", key);
                 intent.putExtras(b);
+                Toast.makeText(getApplicationContext(), "Review Submitted", Toast.LENGTH_SHORT).show();
+
                 startActivity(intent);
             }
         });

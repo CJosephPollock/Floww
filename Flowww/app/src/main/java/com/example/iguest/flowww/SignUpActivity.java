@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -24,6 +25,8 @@ public class SignUpActivity extends AppCompatActivity {
         Firebase.setAndroidContext(this);
         ref = new Firebase("https://flowww.firebaseio.com/");
         setContentView(R.layout.activity_sign_up);
+
+        getSupportActionBar().hide();
 
         Button btn = (Button) findViewById(R.id.signUpButton);
         btn.setOnClickListener(new View.OnClickListener() {

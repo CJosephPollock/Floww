@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.telecom.Call;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -23,6 +24,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Firebase.setAndroidContext(this);
         ref = new Firebase("https://flowww.firebaseio.com/");
+
+        getSupportActionBar().hide();
+
 
         if(ref.getAuth() != null) {
             loadMap();

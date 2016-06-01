@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.Switch;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.firebase.client.ChildEventListener;
@@ -64,6 +65,7 @@ public class AddActivity extends AppCompatActivity {
         ref.push().setValue(fl);
 
 
+
         ref.limitToLast(1).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -84,7 +86,9 @@ public class AddActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(AddActivity.this, DetailsView.class);
                 intent.putExtras(bundle);
+                Toast.makeText(getApplicationContext(), "Fountain Added", Toast.LENGTH_SHORT).show();
                 startActivity(intent);
+
             }
 
             @Override
