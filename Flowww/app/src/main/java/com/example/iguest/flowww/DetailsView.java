@@ -45,7 +45,7 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private Firebase ref;
     //create array list of reviews
-
+    Switch isOperational;
     LatLng location;
 
 
@@ -97,7 +97,7 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
         final Button addReviewBtn = (Button)findViewById(R.id.btnAddReview);
-        final Switch isOperational = (Switch)findViewById(R.id.available_switch);
+        isOperational = (Switch)findViewById(R.id.available_switch);
 
 
         isOperational.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -170,7 +170,7 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
 
 
 
-        ref.addValueEventListener(new ValueEventListener() {
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
 
@@ -188,6 +188,8 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
                         .position(location).icon(BitmapDescriptorFactory.fromResource(R.drawable.map_icon)));
                 //mMap.addMarker(new MarkerOptions().position(location));//.title(getIntent().getExtras().getString("name")));
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 16.0f));
+
+                isOperational.setChecked(isWorking);
 
                 detailSourceName.setText(name);
 
