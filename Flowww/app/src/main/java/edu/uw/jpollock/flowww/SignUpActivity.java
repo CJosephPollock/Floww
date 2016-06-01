@@ -27,6 +27,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         getSupportActionBar().hide();
 
+        // SIGN UP BUTTON - ON CLICK SENDS NEW ACCOUNT INFO TO FIREBASE THEN GOES TO MAP ACTIVITY
         Button btn = (Button) findViewById(R.id.signUpButton);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override

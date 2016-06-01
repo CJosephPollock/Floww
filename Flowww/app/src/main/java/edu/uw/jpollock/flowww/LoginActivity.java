@@ -25,19 +25,19 @@ public class LoginActivity extends AppCompatActivity {
 
         getSupportActionBar().hide();
 
-
+        // IF NOT LOGGED IN OR SIGNED AND JUST WANTS TO GO TO MAP
         if(ref.getAuth() != null) {
             loadMap();
         }
 
         setContentView(R.layout.activity_login);
 
-        Button login = (Button) findViewById(R.id.loginButton);
-        Button signUp = (Button) findViewById(R.id.signUpButton);
-        Button toMapButton = (Button) findViewById(R.id.toMapButton);
+        Button login = (Button) findViewById(R.id.loginButton); // login button
+        Button signUp = (Button) findViewById(R.id.signUpButton); // sign up button
+        Button toMapButton = (Button) findViewById(R.id.toMapButton); // go straight to map button
 
 
-
+        // LOGIN ON CLICK - FIREBASE AUTHENTICATION OF LOGIN INFO
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,6 +61,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        // SIGN UP BUTTON - IF NO ACCOUNT, CLICK HERE FOR SIGN UP ACTIVITY
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-
+        // TO MAP BUTTON ON CLICK TAKES YOU TO MAP ACTIVITY
         toMapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,6 +84,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    // LOADS MAP ACTIVITY GOING STRAIGHT TO THE MAP
     public void loadMap() {
         Intent intent = new Intent(LoginActivity.this, MapActivity.class);
         startActivity(intent);

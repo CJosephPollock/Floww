@@ -27,6 +27,7 @@ public class AddActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // FIREBASE UTILIZATION
         Firebase.setAndroidContext(this);
         ref = new Firebase("https://flowww.firebaseio.com/");
 
@@ -34,31 +35,35 @@ public class AddActivity extends AppCompatActivity {
 
     }
 
+    // METHOD FOR ADDING NEW WATER SOURCE INFORMATION
     public void uploadNewWaterSource(View v) {
-        EditText nameInput = (EditText) findViewById(R.id.set_name);
+        EditText nameInput = (EditText) findViewById(R.id.set_name); // water source name
         final String name = nameInput.getText().toString();
-        EditText locationDescriptionInput = (EditText) findViewById(R.id.set_location_description);
+        EditText locationDescriptionInput = (EditText) findViewById(R.id.set_location_description); // location/desc
         final String locationDescription = locationDescriptionInput.getText().toString();
-        RatingBar starsInput = (RatingBar) findViewById(R.id.set_rating);
+        RatingBar starsInput = (RatingBar) findViewById(R.id.set_rating); // rating of water source
 
-        final float stars = starsInput.getRating();
-        final boolean status = ((Switch) findViewById(R.id.available_switch)).isChecked();
-        final String reviewDesc = ((EditText) findViewById(R.id.set_init_review)).getText().toString();
-        final String reviewTitle = ((EditText) findViewById(R.id.init_review_title)).getText().toString();
+        final float stars = starsInput.getRating(); // rating stars
+        final boolean status = ((Switch) findViewById(R.id.available_switch)).isChecked(); // water status - is working(?)
+        final String reviewDesc = ((EditText) findViewById(R.id.set_init_review)).getText().toString(); // review description
+        final String reviewTitle = ((EditText) findViewById(R.id.init_review_title)).getText().toString(); // title/subject line of review
 
+        // TO GET LOCATION - LONGITUDE AND LATITUDE OF CURRENT LOCATION WATER SOURCE
         LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
         Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         final double lng = location.getLongitude();
         final double lat = location.getLatitude();
 
-
+        // INSTANTIATE INITIAL WATER REVIEW FOR NEW WATER SOURCE
         Review initial = new Review(stars, reviewDesc, reviewTitle, System.currentTimeMillis()/1000);
+        // INSTANTIATE WATER SOURCE LOCATION
         FountainLocation fl = new FountainLocation(name, locationDescription, status, initial, lat, lng);
 
+        // ADD WATER SOURCE LOCATION INFORMATION TO FIREBASE
         ref.push().setValue(fl);
 
 
-
+        // GET MOST RECENTLY ADD WATER SOURCE FROM FIREBASE
         ref.limitToLast(1).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
