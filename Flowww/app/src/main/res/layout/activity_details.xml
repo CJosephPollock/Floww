@@ -121,8 +121,6 @@ tools:context="com.example.iguest.flowww.DetailsView">
 
     </LinearLayout>
 
-
 </ScrollView>
-
 
 </LinearLayout>

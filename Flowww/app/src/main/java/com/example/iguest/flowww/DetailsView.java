@@ -45,11 +45,42 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
     private ArrayList reviewsList;
     private ReviewAdapter adapter;
     LatLng location;
+    ListView reviews;
+
+
+    public void getListViewHeight(ListView listView) {
+        ListAdapter mAdapter = listView.getAdapter();
+        System.out.println("WHOO " + mAdapter.getCount());
+
+        int totalHeight = 0;
+
+        for (int i = 0; i < mAdapter.getCount(); i++) {
+            View mView = mAdapter.getView(i, null, listView);
+
+            mView.measure(
+                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+
+                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+
+            totalHeight += mView.getMeasuredHeight();
+            Log.w("HEIGHT" + i, String.valueOf(totalHeight));
+
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight
+                + (listView.getDividerHeight() * (mAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
+        listView.requestLayout();
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
+        reviews = (ListView)findViewById(R.id.listDetailsSourceReviews);
+
         Firebase.setAndroidContext(this);
 
         final String key = getIntent().getExtras().getString("lastKey");
@@ -66,28 +97,7 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
             addReviewBtn.setVisibility(View.GONE);
         }
 
-        final ListView lv = (ListView)findViewById(R.id.listDetailsSourceReviews);
-        lv.setOnTouchListener(new ListView.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                int action = event.getAction();
-                switch (action) {
-                    case MotionEvent.ACTION_DOWN:
-                        // Disallow ScrollView to intercept touch events.
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        break;
 
-                    case MotionEvent.ACTION_UP:
-                        // Allow ScrollView to intercept touch events.
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
-                        break;
-                }
-
-                // Handle ListView touch events.
-                v.onTouchEvent(event);
-                return true;
-            }
-        });
 
         final TextView detailSourceName = (TextView)findViewById(R.id.txtDetailsSourceName);
         final ImageView statusIcon = (ImageView)findViewById(R.id.statusIcon);
@@ -104,10 +114,10 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
         });
 
 
-        ListView reviews = (ListView)findViewById(R.id.listDetailsSourceReviews);
 
         reviewsList = new ArrayList<Review>();
         adapter = new ReviewAdapter(this, reviewsList);
+        calculateRating();
 
 
 
@@ -145,24 +155,13 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
 
 
 
-
 //        ArrayAdapter<Review> arrayAdapter = new ArrayAdapter<Review>(
 //                getApplicationContext(),
 //                reviewsList
 //        );
 
-        Log.v("WTF     ", adapter.toString());
         reviews.setAdapter(adapter);
-
-        if(getIntent().getExtras().getBoolean("status")) {
-            System.out.println("true");
-            //statusIcon.setImageBitmap();
-        } else {
-            System.out.println("false");
-            //statusIcon.setImageBitmap();
-        }
-
-
+        
     }
 
     @Override
@@ -170,6 +169,7 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
         super.onResume();
         Log.v("RESUME", "resuming...");
         calculateRating();
+        getListViewHeight(reviews);
     }
 
     public void calculateRating() {
@@ -199,6 +199,7 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
                     reviewsList.add(review);
                 }
                 overallRating.setRating(totalPoints / numReviews);
+                getListViewHeight(reviews);
             }
 
             @Override
