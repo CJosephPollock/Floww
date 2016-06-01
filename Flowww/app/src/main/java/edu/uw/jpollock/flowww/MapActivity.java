@@ -81,9 +81,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
-                    //Log.v("###", messageSnapshot.child("lat").getValue().toString());
-                    //Log.v("###", messageSnapshot.child("lng").getValue().toString());
-                    //create a new review
+
                     double lat = (Double) (messageSnapshot.child("lat").getValue());
                     double lng = (Double) (messageSnapshot.child("lng").getValue());
 
@@ -171,14 +169,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     }
 
-    @Override
-    public void onBackPressed() {
-//        Intent intent = new Intent(this, MapActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        startActivity(intent);
-//        finish();
-    }
-
 
     // ON CONNECTED OF GOOGLE MAPS LOCATION
     @Override
@@ -250,7 +240,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         if(location != null) {
             LatLng change = new LatLng(location.getLatitude(), location.getLongitude());
-            //currentLocationMarker = map.addMarker(new MarkerOptions().position(change));
         }
 
     }
@@ -261,7 +250,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         Intent intent = new Intent(MapActivity.this, DetailsView.class);
         Bundle b = new Bundle();
         b.putString("lastKey", markerList.get(marker));
-        intent.putExtras(b); // not sure what string to use here...
+        intent.putExtras(b);
         startActivity(intent);
         return true;
     }

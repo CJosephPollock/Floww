@@ -31,7 +31,6 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private Firebase ref;
-    //create array list of reviews
     Switch isOperational;
     LatLng location;
 
@@ -42,7 +41,6 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_details);
 
         Firebase.setAndroidContext(this);
-
 
 
         final String key = getIntent().getExtras().getString("lastKey");
@@ -97,7 +95,6 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
 
 
         final TextView detailSourceName = (TextView)findViewById(R.id.txtDetailsSourceName); // water source name text
-//        final ImageView statusIcon = (ImageView)findViewById(R.id.statusIcon);
         final TextView detailsSourceLocation = (TextView)findViewById(R.id.txtDetailsSourceLocation); // water source location text
 
         // ADD REVIEW BUTTON CLICKED - GO TO ADD REVIEW ACTIVITY
@@ -134,8 +131,6 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
             @Override
             public void onDataChange(DataSnapshot snapshot) {
 
-                Log.v("###", "GETTING DATA: " + snapshot);
-
                 String name = snapshot.child("name").getValue().toString();
                 String desc = snapshot.child("locationDescription").getValue().toString();
                 double lat = Double.parseDouble(snapshot.child("lat").getValue().toString());
@@ -146,21 +141,12 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
                 location = new LatLng(lat, lng);
                 Marker fountain = mMap.addMarker(new MarkerOptions()
                         .position(location).icon(BitmapDescriptorFactory.fromResource(R.drawable.map_icon)));
-                //mMap.addMarker(new MarkerOptions().position(location));//.title(getIntent().getExtras().getString("name")));
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 16.0f));
 
                 isOperational.setChecked(isWorking);
 
                 detailSourceName.setText(name);
 
-//                if(isWorking) {
-//                    statusIcon.setImageResource(R.drawable.is_working);
-//                } else {
-//                    statusIcon.setImageResource(R.drawable.not_working);
-//                }
-
-
-                ///set the textviews or whatever to the value in here.
             }
             @Override public void onCancelled(FirebaseError error) { }
         });
@@ -198,8 +184,7 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
                 int numReviews = 0;
 
                 for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
-                    Log.v("###", messageSnapshot.child("rating").getValue().toString());
-                    Log.v("###", messageSnapshot.child("desc").getValue().toString());
+
                     //create a new review
                     float rating = Float.parseFloat(messageSnapshot.child("rating").getValue().toString());
                     String desc = messageSnapshot.child("desc").getValue().toString();
@@ -221,8 +206,6 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
                     ratingCount.setText(numReviews + " reviews");
                 }
                 overallRating.setRating( (float) totalPoints / numReviews);
-                //getListViewHeight(reviews);
-                //Log.v("TEST", "" + reviews.toString());
 
             }
 

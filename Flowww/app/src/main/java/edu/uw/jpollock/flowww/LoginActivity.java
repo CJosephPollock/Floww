@@ -41,7 +41,6 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.v(TAG, "Logging in...");
 
                 EditText username = (EditText) findViewById(R.id.userName);
                 EditText password = (EditText) findViewById(R.id.password);
@@ -66,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
-                //intent.putExtra("EXTRA_TEXT", null); // not sure what string to use here...
+
                 startActivity(intent);
             }
         });
@@ -76,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, MapActivity.class);
-                //intent.putExtra("EXTRA_TEXT", null); // not sure what string to use here...
+
                 startActivity(intent);
             }
         });

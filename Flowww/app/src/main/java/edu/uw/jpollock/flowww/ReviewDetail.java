@@ -71,9 +71,6 @@ public class ReviewDetail extends AppCompatActivity {
             TextView desc = (TextView)convertView.findViewById(R.id.desc_item);
             TextView reviewTitle = (TextView)convertView.findViewById(R.id.desc_title);
 
-            Log.v("CHECK ", "" + review.rating);
-            Log.v("CHECK 2 ", review.desc);
-
             //Set the fields for the "row"
             rating.setRating(review.rating);
             desc.setText(review.desc);

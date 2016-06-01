@@ -68,19 +68,11 @@ public class AddActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 String recentAddKey = dataSnapshot.getKey();
-                Log.v("TEST   ", recentAddKey);
+
                 newKey = recentAddKey;
-                Log.v("CAMELBAK   ", newKey);
 
                 Bundle bundle = new Bundle();
-//                bundle.putString("name", name);
-//                bundle.putString("locationDescription", locationDescription);
-//                bundle.putInt("stars", stars);
-//                bundle.putBoolean("status", status);
                 bundle.putString("lastKey", newKey);
-//                bundle.putDouble("lat", lat);
-//                bundle.putDouble("lng", lng);
-                Log.v("CHECK KEY", ""+ newKey);
 
                 Intent intent = new Intent(AddActivity.this, DetailsView.class);
                 intent.putExtras(bundle);
