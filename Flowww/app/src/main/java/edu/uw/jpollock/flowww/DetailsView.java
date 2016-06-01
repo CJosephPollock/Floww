@@ -36,37 +36,6 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
     LatLng location;
 
 
-//
-//    public void getListViewHeight(ListView listView) {
-//        ListAdapter mAdapter = listView.getAdapter();
-//
-//        int totalHeight = 0;
-//
-//        for (int i = 0; i < mAdapter.getCount(); i++) {
-//
-////            Review r = (Review) reviewsList.get(i);
-////            totalHeight += r.desc.length() / 1.12;
-//
-//            View mView = mAdapter.getView(i, null, listView);
-//
-//            mView.measure(
-//                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
-//
-//                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-//
-//            totalHeight += mView.getMeasuredHeight();
-//            Log.w("HEIGHT" + i, String.valueOf(mView.getMeasuredHeight()));
-//
-//        }
-//
-//        ViewGroup.LayoutParams params = listView.getLayoutParams();
-//        params.height = totalHeight
-//                + (listView.getDividerHeight() * (mAdapter.getCount()) - 1);
-//        listView.setLayoutParams(params);
-//        listView.requestLayout();
-//    }
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,10 +52,14 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        // ADD REVIEW BUTTON
         final Button addReviewBtn = (Button)findViewById(R.id.btnAddReview);
+
+        // WATER SOURCE STATUS SWITCH TOGGLE BUTTON
         isOperational = (Switch)findViewById(R.id.available_switch);
 
-
+        // TOGGLING STATUS BUTTON - IF TOGGLED TO AVAILABLE/IS WORKING UPDATE ISWORKING VALUE IN FIREBASE TO TRUE, ELSE
+        // FALSE IF NOT WORKING STATUS
         isOperational.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
@@ -111,7 +84,7 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
         });
 
 
-
+        // IF NOT LOGGED IN CANNOT ADD REVIEW, OTHERWISE CAN ADD REVIEW
         if(ref.getAuth() != null) {
             addReviewBtn.setVisibility(View.VISIBLE);
             isOperational.setClickable(true);
@@ -123,9 +96,11 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
 
 
 
-        final TextView detailSourceName = (TextView)findViewById(R.id.txtDetailsSourceName);
+        final TextView detailSourceName = (TextView)findViewById(R.id.txtDetailsSourceName); // water source name text
 //        final ImageView statusIcon = (ImageView)findViewById(R.id.statusIcon);
-        final TextView detailsSourceLocation = (TextView)findViewById(R.id.txtDetailsSourceLocation);
+        final TextView detailsSourceLocation = (TextView)findViewById(R.id.txtDetailsSourceLocation); // water source location text
+
+        // ADD REVIEW BUTTON CLICKED - GO TO ADD REVIEW ACTIVITY
         addReviewBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,7 +113,9 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
         });
 
 
-        final Button loadReviewButton = (Button)findViewById(R.id.loadReviewDetail);
+        final Button loadReviewButton = (Button)findViewById(R.id.loadReviewDetail); // load reviews button to see reviews
+
+        // ON CLICK OF LOAD REVIEW BUTTONS - TAKES YOU TO LISTVIEW ACTIVITY OF REVIEWS ADDED TO THAT WATER SOURCE
         loadReviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -152,11 +129,7 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
 
 
 
-
-
-
-
-
+        // GETS DATA OF WATER SOURCE
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -194,6 +167,7 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
 
     }
 
+    // BACK STACK ON BACK BUTTON TO MAP ACTIVITY WHEN WATER SOURCE CREATED AND REVIEW ADDED
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(this, MapActivity.class);
@@ -202,6 +176,7 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
         finish();
     }
 
+    // ON RESUME CALCULATES OVERALL RATING
     @Override
     protected void onResume() {
         super.onResume();
@@ -209,7 +184,7 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
     }
 
 
-
+    // CALCULATES OVERALL RATING AND SHOWS RATING COUNT FROM NUMBER OF REVIEWS FOR WATER SOURCE
     public void calculateRating() {
 
 
@@ -237,6 +212,8 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
                     numReviews++;
 
                 }
+
+                // DISPLAYS RATING COUNT
                 TextView ratingCount = (TextView) findViewById(R.id.txtDetailsRatingCount);
                 if(numReviews == 1) {
                     ratingCount.setText("1 review");

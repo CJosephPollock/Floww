@@ -24,11 +24,13 @@ public class AddReviewActivity extends AppCompatActivity{
 
         Firebase.setAndroidContext(this);
 
+        // FIREBASE OF KEY REVIEWS
         final String key = getIntent().getExtras().getString("key");
         ref = new Firebase("https://flowww.firebaseio.com/" + key + "/reviews");
 
 
-
+        // ON CLICK ADD REVIEW - CREATES REVIEW WITH RATING, SUBJECT/REVIEW TITLE, AND REVIEW DESCRIPTION, PUSHED INFO
+        // TO FIREBASE, THEN TAKES YOU BACK TO DETAILS VIEW OF WATER SOURCE
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
