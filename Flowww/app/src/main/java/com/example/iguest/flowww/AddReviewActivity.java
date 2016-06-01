@@ -34,10 +34,11 @@ public class AddReviewActivity extends AppCompatActivity{
             public void onClick(View v) {
                 RatingBar starsInput = (RatingBar) findViewById(R.id.set_review_rating);
                 final float stars = starsInput.getRating();
-                final String review = ((EditText) findViewById(R.id.review_text)).getText().toString();
+                final String reviewDesc = ((EditText) findViewById(R.id.review_text)).getText().toString();
 
+                final String reviewTitle = ((EditText) findViewById(R.id.review_title)).getText().toString();
 
-                Review newReview = new Review(stars, review, System.currentTimeMillis()/1000);
+                Review newReview = new Review(stars, reviewDesc, reviewTitle, System.currentTimeMillis()/1000);
                 ref.push().setValue(newReview);
 
 

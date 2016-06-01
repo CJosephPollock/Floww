@@ -49,8 +49,8 @@ public class AddActivity extends AppCompatActivity {
 
         final float stars = starsInput.getRating();
         final boolean status = ((Switch) findViewById(R.id.available_switch)).isChecked();
-        final String review = ((EditText) findViewById(R.id.set_init_review)).getText().toString();
-
+        final String reviewDesc = ((EditText) findViewById(R.id.set_init_review)).getText().toString();
+        final String reviewTitle = ((EditText) findViewById(R.id.init_review_title)).getText().toString();
 
         LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
         Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -58,7 +58,7 @@ public class AddActivity extends AppCompatActivity {
         final double lat = location.getLatitude();
 
 
-        Review initial = new Review(stars, review, System.currentTimeMillis()/1000);
+        Review initial = new Review(stars, reviewDesc, reviewTitle, System.currentTimeMillis()/1000);
         FountainLocation fl = new FountainLocation(name, locationDescription, status, initial, lat, lng);
 
         ref.push().setValue(fl);

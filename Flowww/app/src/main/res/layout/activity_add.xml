@@ -76,6 +76,12 @@ tools:context="com.example.iguest.flowww.AddActivity">
     android:text="Initial Review:" />
 
 <EditText
+    android:id="@+id/init_review_title"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:hint="Review Title"/>
+
+<EditText
     android:id="@+id/set_init_review"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"

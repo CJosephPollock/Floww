@@ -7,13 +7,15 @@ public class Review {
     float rating;
     String desc;
     Long timestamp;
+    String title;
 
     public Review() {}
 
 
-    public Review(float rating, String desc, Long timestamp) {
+    public Review(float rating, String desc, String title, Long timestamp) {
         this.rating = rating;
         this.desc = desc;
         this.timestamp = timestamp;
+        this.title = title;
     }
 }

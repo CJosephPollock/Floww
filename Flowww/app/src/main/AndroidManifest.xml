@@ -23,11 +23,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddReviewActivity"/>
+        <activity android:name=".AddReviewActivity" />
         <activity android:name=".AddActivity" />
-        <activity android:name=".MapActivity">
-
-        </activity>
+        <activity android:name=".MapActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -44,7 +42,8 @@
         <activity
             android:name=".DetailsView"
             android:label="@string/title_activity_details_view" />
-        <activity android:name=".SignUpActivity"></activity>
+        <activity android:name=".SignUpActivity" />
+        <activity android:name=".ReviewDetail"></activity>
     </application>
 
 </manifest>

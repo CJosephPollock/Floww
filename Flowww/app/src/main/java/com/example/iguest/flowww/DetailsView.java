@@ -42,53 +42,49 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private Firebase ref;
     //create array list of reviews
-    private ArrayList reviewsList;
-    private ReviewAdapter adapter;
+
     LatLng location;
-    ListView reviews;
 
 
-
-    public void getListViewHeight(ListView listView) {
-        ListAdapter mAdapter = listView.getAdapter();
-
-        int totalHeight = 0;
-
-        for (int i = 0; i < mAdapter.getCount(); i++) {
-
-//            Review r = (Review) reviewsList.get(i);
-//            totalHeight += r.desc.length() / 1.12;
-
-            View mView = mAdapter.getView(i, null, listView);
-
-            mView.measure(
-                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
-
-                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-
-            totalHeight += mView.getMeasuredHeight();
-            Log.w("HEIGHT" + i, String.valueOf(mView.getMeasuredHeight()));
-
-        }
-
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight
-                + (listView.getDividerHeight() * (mAdapter.getCount()) - 1);
-        listView.setLayoutParams(params);
-        listView.requestLayout();
-    }
+//
+//    public void getListViewHeight(ListView listView) {
+//        ListAdapter mAdapter = listView.getAdapter();
+//
+//        int totalHeight = 0;
+//
+//        for (int i = 0; i < mAdapter.getCount(); i++) {
+//
+////            Review r = (Review) reviewsList.get(i);
+////            totalHeight += r.desc.length() / 1.12;
+//
+//            View mView = mAdapter.getView(i, null, listView);
+//
+//            mView.measure(
+//                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+//
+//                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+//
+//            totalHeight += mView.getMeasuredHeight();
+//            Log.w("HEIGHT" + i, String.valueOf(mView.getMeasuredHeight()));
+//
+//        }
+//
+//        ViewGroup.LayoutParams params = listView.getLayoutParams();
+//        params.height = totalHeight
+//                + (listView.getDividerHeight() * (mAdapter.getCount()) - 1);
+//        listView.setLayoutParams(params);
+//        listView.requestLayout();
+//    }
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
-        reviews = (ListView)findViewById(R.id.listDetailsSourceReviews);
 
         Firebase.setAndroidContext(this);
 
 
-        reviews.setScrollContainer(false);
 
         final String key = getIntent().getExtras().getString("lastKey");
         ref = new Firebase("https://flowww.firebaseio.com/" + key);
@@ -121,9 +117,22 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
         });
 
 
+        final Button loadReviewButton = (Button)findViewById(R.id.loadReviewDetail);
+        loadReviewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DetailsView.this, ReviewDetail.class);
+                Bundle b = new Bundle();
+                b.putString("lastKey", key);
+                intent.putExtras(b);
+                startActivity(intent);
+            }
+        });
 
-        reviewsList = new ArrayList<Review>();
-        adapter = new ReviewAdapter(this, reviewsList);
+
+
+
+
 
 
 
@@ -160,14 +169,6 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
             @Override public void onCancelled(FirebaseError error) { }
         });
 
-
-        //calculateRating();
-
-
-
-        reviews.setAdapter(adapter);
-
-
     }
 
     @Override
@@ -187,6 +188,8 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
 
 
     public void calculateRating() {
+
+
         ref.child("reviews").orderByChild("timestamp").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -196,24 +199,20 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
                 float totalPoints = 0;
                 int numReviews = 0;
 
-                reviewsList.clear();
-
                 for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
                     Log.v("###", messageSnapshot.child("rating").getValue().toString());
                     Log.v("###", messageSnapshot.child("desc").getValue().toString());
                     //create a new review
                     float rating = Float.parseFloat(messageSnapshot.child("rating").getValue().toString());
                     String desc = messageSnapshot.child("desc").getValue().toString();
+                    String title = messageSnapshot.child("title").getValue().toString();
                     Long time = Long.parseLong(messageSnapshot.child("timestamp").getValue().toString());
 
-                    Review review = new Review(rating, desc, time);
+                    Review review = new Review(rating, desc, title, time);
 
                     totalPoints += rating;
                     numReviews++;
 
-
-                    //add it to the arraylist of reviews
-                    reviewsList.add(review);
                 }
                 TextView ratingCount = (TextView) findViewById(R.id.txtDetailsRatingCount);
                 if(numReviews == 1) {
@@ -222,8 +221,11 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
                     ratingCount.setText(numReviews + " reviews");
                 }
                 overallRating.setRating( (float) totalPoints / numReviews);
-                getListViewHeight(reviews);
+                //getListViewHeight(reviews);
+                //Log.v("TEST", "" + reviews.toString());
+
             }
+
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
@@ -233,35 +235,7 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
     }
 
 
-    public class ReviewAdapter extends ArrayAdapter<Review> {
-        public ReviewAdapter(Context context, ArrayList<Review> reviews) {
-            super(context, 0, reviews);
-        }
 
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            //Get the data for the item in a given position
-            Review review = getItem(position);
-            //Check if an existing view is being reused, otherwise inflate the view
-            if (convertView == null) {
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.activity_list_item, parent, false);
-            }
-            //Lookup view for data population
-            RatingBar rating = (RatingBar)convertView.findViewById(R.id.rating_item);
-            TextView desc = (TextView)convertView.findViewById(R.id.desc_item);
-
-            Log.v("CHECK ", "" + review.rating);
-            Log.v("CHECK 2 ", review.desc);
-
-            //Set the fields for the "row"
-            rating.setRating(review.rating);
-            desc.setText(review.desc);
-
-
-
-            return convertView;
-        }
-    }
 
 
 
