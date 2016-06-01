@@ -68,7 +68,7 @@ public class AddActivity extends AppCompatActivity {
                 String recentAddKey = dataSnapshot.getKey();
                 Log.v("TEST   ", recentAddKey);
                 newKey = recentAddKey;
-                Log.v("TEST   ", newKey);
+                Log.v("CAMELBAK   ", newKey);
 
                 Bundle bundle = new Bundle();
 //                bundle.putString("name", name);

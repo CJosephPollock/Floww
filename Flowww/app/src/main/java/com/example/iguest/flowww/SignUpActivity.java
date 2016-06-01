@@ -46,7 +46,6 @@ public class SignUpActivity extends AppCompatActivity {
                         public void onAuthenticated(AuthData authData) {
                             System.out.println("User ID: " + authData.getUid() + ", Provider: " + authData.getProvider());
                             Intent intent = new Intent(SignUpActivity.this, MapActivity.class);
-                            //intent.putExtra("EXTRA_TEXT", null); // not sure what string to use here...
                             startActivity(intent);
                         }
                         @Override

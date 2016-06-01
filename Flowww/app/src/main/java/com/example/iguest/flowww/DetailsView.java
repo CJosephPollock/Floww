@@ -50,7 +50,7 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
 
     public void getListViewHeight(ListView listView) {
         ListAdapter mAdapter = listView.getAdapter();
-        System.out.println("WHOO " + mAdapter.getCount());
+        System.out.println("WHOO23 " + mAdapter.getCount());
 
         int totalHeight = 0;
 
@@ -69,7 +69,7 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
 
         ViewGroup.LayoutParams params = listView.getLayoutParams();
         params.height = totalHeight
-                + (listView.getDividerHeight() * (mAdapter.getCount() - 1));
+                + (listView.getDividerHeight() * (mAdapter.getCount()) - 1);
         listView.setLayoutParams(params);
         listView.requestLayout();
     }
@@ -117,7 +117,6 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
 
         reviewsList = new ArrayList<Review>();
         adapter = new ReviewAdapter(this, reviewsList);
-        calculateRating();
 
 
 
@@ -133,6 +132,7 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
                 double lng = Double.parseDouble(snapshot.child("lng").getValue().toString());
                 boolean isWorking = Boolean.parseBoolean(snapshot.child("isWorking").getValue().toString());
 
+                detailsSourceLocation.setText(desc);
                 location = new LatLng(lat, lng);
                 Marker fountain = mMap.addMarker(new MarkerOptions()
                         .position(location).icon(BitmapDescriptorFactory.fromResource(R.drawable.map_icon)));
@@ -154,22 +154,21 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
         });
 
 
+        //calculateRating();
 
-//        ArrayAdapter<Review> arrayAdapter = new ArrayAdapter<Review>(
-//                getApplicationContext(),
-//                reviewsList
-//        );
+
 
         reviews.setAdapter(adapter);
-        
+
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         Log.v("RESUME", "resuming...");
+        //reviewsList = new ArrayList<Review>();
         calculateRating();
-        getListViewHeight(reviews);
     }
 
     public void calculateRating() {
@@ -181,6 +180,9 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
 
                 int totalPoints = 0;
                 int numReviews = 0;
+
+                reviewsList.clear();
+                
                 for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
                     Log.v("###", messageSnapshot.child("rating").getValue().toString());
                     Log.v("###", messageSnapshot.child("desc").getValue().toString());

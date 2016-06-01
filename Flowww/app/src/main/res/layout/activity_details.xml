@@ -83,7 +83,7 @@ tools:context="com.example.iguest.flowww.DetailsView">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:text="source location"/>
+            />
 
         <RatingBar
             android:id="@+id/rtgDetailsSourceStars"
