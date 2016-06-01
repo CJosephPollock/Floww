@@ -107,11 +107,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         FloatingActionButton fab = (FloatingActionButton)findViewById(R.id.add_resource_button);
         fab.setImageResource(R.drawable.add_water);
 
-        if(ref.getAuth() != null) {
-            fab.setVisibility(View.VISIBLE);
-        } else {
-            fab.setVisibility(View.GONE);
-        }
+        setFABVisibility();
+
 
         if (fab != null) {
             fab.setOnClickListener(new View.OnClickListener() {
@@ -123,6 +120,15 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             });
         }
 
+    }
+
+    public void setFABVisibility() {
+        FloatingActionButton fab = (FloatingActionButton)findViewById(R.id.add_resource_button);
+        if(ref.getAuth() != null) {
+            fab.setVisibility(View.VISIBLE);
+        } else {
+            fab.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -269,7 +275,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     Intent intent = new Intent(MapActivity.this, LoginActivity.class);
                     startActivity(intent);
                 }
-
+                setFABVisibility();
                 return true; //I got this
 
             default:
