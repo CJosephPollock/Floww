@@ -50,7 +50,7 @@ public class AddActivity extends AppCompatActivity {
 
         // TO GET LOCATION - LONGITUDE AND LATITUDE OF CURRENT LOCATION WATER SOURCE
         LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        Location location = lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
         final double lng = location.getLongitude();
         final double lat = location.getLatitude();
 
@@ -61,6 +61,7 @@ public class AddActivity extends AppCompatActivity {
 
         // ADD WATER SOURCE LOCATION INFORMATION TO FIREBASE
         ref.push().setValue(fl);
+
 
 
         // GET MOST RECENTLY ADD WATER SOURCE FROM FIREBASE

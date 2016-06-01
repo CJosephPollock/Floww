@@ -102,7 +102,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         // FLOATING ACTION BUTTON
         FloatingActionButton fab = (FloatingActionButton)findViewById(R.id.add_resource_button);
-        fab.setImageResource(R.drawable.add_water);
+        fab.setImageResource(R.drawable.ic_action_add);
 
         setFABVisibility();
 
@@ -151,10 +151,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
 
         LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        Location location = lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
 
-        // ENABLE CURRENT LOCATION
         LatLng currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
+        // ENABLE CURRENT LOCATION
 
         map.setMyLocationEnabled(true);
 
@@ -166,6 +166,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         uiSettings.setZoomControlsEnabled(true);
 
         map.setOnMarkerClickListener(this);
+
+
 
     }
 

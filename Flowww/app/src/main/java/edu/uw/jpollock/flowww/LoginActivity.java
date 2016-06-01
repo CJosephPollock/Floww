@@ -26,6 +26,7 @@ public class LoginActivity extends AppCompatActivity {
 
         getSupportActionBar().hide();
 
+
         // IF NOT LOGGED IN OR SIGNED AND JUST WANTS TO GO TO MAP
         if(ref.getAuth() != null) {
             loadMap();
