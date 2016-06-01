@@ -3,11 +3,13 @@ package com.example.iguest.flowww;
 /**
  * Created by iguest on 5/30/16.
  */
+
+// REVIEW INFORMATION
 public class Review {
-    float rating;
-    String desc;
-    Long timestamp;
-    String title;
+    float rating; // review rating
+    String desc; // review description
+    Long timestamp; // time of review add
+    String title; // title/subject of review
 
     public Review() {}
 

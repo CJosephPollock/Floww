@@ -5,13 +5,15 @@ import java.util.ArrayList;
 /**
  * Created by iguest on 5/30/16.
  */
+
+// WATER SOURCE/FOUNTAIN LOCATION INFORMATION
 public class FountainLocation {
-    String name;
-    String locationDescription;
-    boolean isWorking;
-    ArrayList<Review> reviews;
-    double lat;
-    double lng;
+    String name; // name
+    String locationDescription; // location description
+    boolean isWorking; // working or not working
+    ArrayList<Review> reviews; // list of reviews for water source
+    double lat; // latitude
+    double lng; // longitude
 
 
     public FountainLocation(String name, String locationDescription, boolean isWorking, Review initialReview, double lat, double lng) {
@@ -19,7 +21,7 @@ public class FountainLocation {
         this.isWorking = isWorking;
         this.locationDescription = locationDescription;
         reviews = new ArrayList<Review>();
-        reviews.add(initialReview);
+        reviews.add(initialReview); // add initial review to list of reviews
         this.lat = lat;
         this.lng = lng;
     }
