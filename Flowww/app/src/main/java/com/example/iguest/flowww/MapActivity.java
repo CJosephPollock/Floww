@@ -161,7 +161,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentPosition, 16));
         uiSettings = map.getUiSettings();
-        uiSettings.setZoomControlsEnabled(true);
+        //uiSettings.setZoomControlsEnabled(true);
 
         map.setOnMarkerClickListener(this);
 
