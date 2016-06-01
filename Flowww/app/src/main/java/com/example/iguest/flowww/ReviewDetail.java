@@ -18,6 +18,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ReviewDetail extends AppCompatActivity {
 
@@ -82,9 +83,15 @@ public class ReviewDetail extends AppCompatActivity {
         ref.child("reviews").orderByChild("timestamp").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                ArrayList<DataSnapshot> tempList = new ArrayList<DataSnapshot>();
 
                 for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
+                    tempList.add(messageSnapshot);
+                }
 
+                Collections.reverse(tempList);
+
+                for(DataSnapshot messageSnapshot : tempList) {
                     //create a new review
                     float rating = Float.parseFloat(messageSnapshot.child("rating").getValue().toString());
                     String desc = messageSnapshot.child("desc").getValue().toString();
