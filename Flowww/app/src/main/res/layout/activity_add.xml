@@ -19,7 +19,7 @@ tools:context="edu.uw.jpollock.flowww.AddActivity">
     android:id="@+id/set_name"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:hint="Title of water source"/>
+    android:hint="Title of fountain (Ex. HUB Hidden Gem)"/>
 
 <TextView
     android:layout_width="wrap_content"
@@ -30,7 +30,7 @@ tools:context="edu.uw.jpollock.flowww.AddActivity">
     android:id="@+id/set_location_description"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:hint="Location of water source"/>
+    android:hint="Location description"/>
 
 <TextView
     android:layout_width="wrap_content"
@@ -85,7 +85,7 @@ tools:context="edu.uw.jpollock.flowww.AddActivity">
     android:id="@+id/set_init_review"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:hint="Give an initial review of the water source"/>
+    android:hint="Give an initial impression of the water source"/>
 
 <Button
     android:layout_width="match_parent"
