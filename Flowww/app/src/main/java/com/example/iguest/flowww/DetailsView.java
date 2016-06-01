@@ -12,11 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.ScrollView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.firebase.client.ChildEventListener;
@@ -35,6 +37,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class DetailsView extends AppCompatActivity implements OnMapReadyCallback {
@@ -94,16 +97,47 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
         final Button addReviewBtn = (Button)findViewById(R.id.btnAddReview);
+        final Switch isOperational = (Switch)findViewById(R.id.available_switch);
+
+
+        isOperational.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                ref.child("isWorking").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        boolean isWorking = Boolean.parseBoolean(dataSnapshot.getValue().toString());
+
+                        Map<String,Object> taskMap = new HashMap<String,Object>();
+                        taskMap.put("isWorking", !isWorking);
+                        ref.updateChildren(taskMap);
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+
+                    }
+                });
+
+
+            }
+        });
+
+
+
         if(ref.getAuth() != null) {
             addReviewBtn.setVisibility(View.VISIBLE);
+            isOperational.setClickable(true);
+
         } else {
             addReviewBtn.setVisibility(View.GONE);
+            isOperational.setClickable(false);
         }
 
 
 
         final TextView detailSourceName = (TextView)findViewById(R.id.txtDetailsSourceName);
-        final ImageView statusIcon = (ImageView)findViewById(R.id.statusIcon);
+//        final ImageView statusIcon = (ImageView)findViewById(R.id.statusIcon);
         final TextView detailsSourceLocation = (TextView)findViewById(R.id.txtDetailsSourceLocation);
         addReviewBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,11 +191,11 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
 
                 detailSourceName.setText(name);
 
-                if(isWorking) {
-                    statusIcon.setImageResource(R.drawable.is_working);
-                } else {
-                    statusIcon.setImageResource(R.drawable.not_working);
-                }
+//                if(isWorking) {
+//                    statusIcon.setImageResource(R.drawable.is_working);
+//                } else {
+//                    statusIcon.setImageResource(R.drawable.not_working);
+//                }
 
 
                 ///set the textviews or whatever to the value in here.
